@@ -46,6 +46,7 @@
   <ItemGroup>
      <Compile Include="Assets\3dsmax Bip Warrior Anim Free\Scripts\MouseOrbit.js" />
      <Compile Include="Assets\Scripts\ExplosionScript.js" />
+     <None Include="Assets\Animations\_CompleteAnimationList.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

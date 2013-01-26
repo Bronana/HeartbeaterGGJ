@@ -12,17 +12,6 @@ public class BloodExplosion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-		if(destroyed)
-		{
-			if(++deadCounter == 10)
-				Destroy(transform.parent.gameObject);
-			else{
-				Color originalColor = renderer.material.color;
-				renderer.material.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1F - deadCounter * .1F);
-			}
-			
-		}
 		
 	}
 	
