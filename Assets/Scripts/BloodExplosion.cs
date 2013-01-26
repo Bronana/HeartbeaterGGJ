@@ -8,7 +8,6 @@ public class BloodExplosion : MonoBehaviour {
 	private int deadCounter = 0;
 	// Use this for initialization
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame
@@ -29,8 +28,9 @@ public class BloodExplosion : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other)
 	{
-		destroyed = true;
-		
+		Destroy(other.gameObject);
+		//destroyed = true;
+		transform.parent.transform.animation.Play("death");
 		Destroy(collider);
 		
 		Instantiate(blood, new Vector3(transform.position.x, transform.position.y + 1.5F, transform.position.z), Quaternion.identity);
