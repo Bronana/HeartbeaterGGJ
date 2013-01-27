@@ -1,14 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof (Animator))]
-[RequireComponent(typeof (CapsuleCollider))]
-[RequireComponent(typeof (Rigidbody))]
 
 public class ElfControllerScript : MonoBehaviour {
 	
 	public GameObject blood;
+	public GameObject heart;
 	public GameControlScript controlScript;
+	bool killed = false;
 	public float animSpeed = 1f;				// a public setting for overall animator animation speed
 	
 	private Animator anim;							// a reference to the animator on the character
@@ -36,19 +35,33 @@ public class ElfControllerScript : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other)
 	{
+		Destroy(collider);
+		anim.SetBool("Killed", true);
 		Instantiate(blood, transform.position, Quaternion.identity);
-		Destroy(this.gameObject);
-		
-		if(other.tag == "Fist")
-		{
-			print("punched");
-			
-		}
-		else
-		{
-			controlScript.Hit();
-		}
-		
+		Instantiate(heart, transform.position, Quaternion.identity);
+		Destroy(collider);
+		StartCoroutine(Kill());		
 	}
+	
+	void OnCollisionEnter(Collision collision)
+	{
+		print(collision.gameObject.name);
+		if(collision.gameObject.name != "Jack") return;
+		Destroy(collider);
+		anim.SetBool("Killed", true);
+		Instantiate(blood, transform.position, Quaternion.identity);
+		Instantiate(heart, transform.position, Quaternion.identity);
+		Destroy(collider);
+		StartCoroutine(Kill());
+		//Destroy(this.gameObject);
+		
+		controlScript.Hit();
+	}
+	
+	IEnumerator Kill() {
+
+        yield return new WaitForSeconds(1);
+        Destroy(this.gameObject);
+    }
 }
 
