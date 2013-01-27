@@ -7,17 +7,15 @@ using System.Collections;
 [RequireComponent(typeof (Rigidbody))]
 public class PlayerControlScript : MonoBehaviour
 {
-	
-	
 	public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
 	public bool useCurves;						// a setting for teaching purposes to show use of curves
 	public bool simulating;
+	int lastLook = 1;
 	
 	private Animator anim;							// a reference to the animator on the character
 	private CapsuleCollider col;
 	private AnimatorStateInfo currentBaseState;
-	
-	static int idleState = Animator.StringToHash("Base Layer.Idle");	
+		
 	static int locoState = Animator.StringToHash("Base Layer.Locomotion");			// these integers are references to our animator's states
 	static int jumpState = Animator.StringToHash("Base Layer.Jump");				// and are used to check state for various actions to occur
 	static int punchState = Animator.StringToHash("Base Layer.Punch");	
@@ -55,13 +53,18 @@ public class PlayerControlScript : MonoBehaviour
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;								// set the speed of our animator to the public variable 'animSpeed'
 		
+		if(h > .1F)
+			lastLook = 1;
+		else if(h < -.1F)
+			lastLook = -1;
 		
-		if(h > 0F)
+		if(lastLook == 1)
 			transform.rotation = Quaternion.Euler(0F, 90F, 0F);
 		else
 			transform.rotation = Quaternion.Euler(0F, -90F, 0F);
 		
-		transform.Translate(0, 0, h * .1F);
+		transform.Translate(0, 0, Mathf.Abs(h) * .1F);
+		anim.SetBool("Punch", false);
 		
 		// STANDARD JUMPING
 		
