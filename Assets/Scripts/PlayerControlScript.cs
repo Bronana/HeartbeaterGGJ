@@ -16,7 +16,7 @@ public class PlayerControlScript : MonoBehaviour
 	public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
 	public float lookSmoother = 3f;				// a smoothing setting for camera motion
 	public bool useCurves;						// a setting for teaching purposes to show use of curves
-
+	public bool simulating;
 	
 	private Animator anim;							// a reference to the animator on the character
 	private AnimatorStateInfo currentBaseState;			// a reference to the current state of the animator, used for base layer
@@ -33,6 +33,8 @@ public class PlayerControlScript : MonoBehaviour
 	static int rollState = Animator.StringToHash("Base Layer.Roll");
 	static int waveState = Animator.StringToHash("Layer2.Wave");
 	
+	
+	
 
 	void Start ()
 	{
@@ -43,9 +45,17 @@ public class PlayerControlScript : MonoBehaviour
 			anim.SetLayerWeight(1, 1);
 	}
 	
+	public void SimulateRightHandMovement()
+	{
+		float h = .9F;				// setup h variable as our horizontal input axis				// setup v variables as our vertical input axis
+		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
+		anim.speed = animSpeed;	
+		transform.rotation = Quaternion.Euler(0F, 90F, 0F);
+	}
 	
 	void FixedUpdate ()
 	{
+		if(simulating) return;
 		float h = Input.GetAxis("Horizontal");				// setup h variable as our horizontal input axis
 		float v = Input.GetAxis("Vertical");				// setup v variables as our vertical input axis
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				

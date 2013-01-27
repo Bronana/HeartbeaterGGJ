@@ -28,11 +28,10 @@ public class BloodExplosion : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other)
 	{
-		Destroy(other.gameObject);
-		//destroyed = true;
-		transform.parent.transform.animation.Play("death");
-		Destroy(collider);
+		destroyed = true;
 		
-		Instantiate(blood, new Vector3(transform.position.x, transform.position.y + 1.5F, transform.position.z), Quaternion.identity);
+		Destroy(this.gameObject);
+		
+		Instantiate(blood, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
 	}
 }
