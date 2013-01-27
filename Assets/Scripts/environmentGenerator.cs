@@ -21,7 +21,7 @@ public class environmentGenerator : MonoBehaviour {
             Instantiate(groundTile, new Vector3(-7 + i * .5f, 0, 4), Quaternion.identity);
 
         for (int i = 0; i < numMountains; i++)
-            Instantiate(mountain, new Vector3(-6.5f + i * 10f, 0.2f, 8.2f), Quaternion.identity);
+            Instantiate(mountain, new Vector3(-6.5f + i * 10f, 0.2f, 5.4f), Quaternion.identity);
 
         for (int i = 0; i < numTree; i++)
             Instantiate(tree, new Vector3(-4.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
