@@ -44,13 +44,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
      <Compile Include="Assets\Scripts\AudioController.js" />
      <Compile Include="Assets\Scripts\BronanaFadeScript.js" />
      <Compile Include="Assets\Scripts\HeartbeaterFadeScript.js" />
-=======
-     <Compile Include="Assets\Scripts\PlayerControlScript.cs.js" />
->>>>>>> origin/MergeBranch
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
