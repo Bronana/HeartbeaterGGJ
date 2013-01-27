@@ -18,6 +18,9 @@ public class OpeningSceneAnimationScript : MonoBehaviour {
 	void Update () {
 		if(startAnimation)
 			pcs.SimulateRightHandMovement();
+		
+		if(Input.anyKeyDown)
+			Application.LoadLevel(1);
 	}
 	
 	 IEnumerator Do() {
