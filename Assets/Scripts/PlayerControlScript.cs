@@ -52,9 +52,13 @@ public class PlayerControlScript : MonoBehaviour
 		anim.SetLookAtWeight(lookWeight);					// set the Look At Weight - amount to use look at IK vs using the head's animation
 		currentBaseState = anim.GetCurrentAnimatorStateInfo(0);	// set our currentState variable to the current state of the Base Layer (0) of animation
 		
-		if(anim.layerCount ==2)		
+		if(anim.layerCount == 2)		
 			layer2CurrentState = anim.GetCurrentAnimatorStateInfo(1);	// set our layer2CurrentState variable to the current state of the second Layer (1) of animation
 		
+		if(h > 0F)
+			transform.rotation = Quaternion.Euler(0F, 90F, 0F);
+		else
+			transform.rotation = Quaternion.Euler(0F, -90F, 0F);
 		
 		// STANDARD JUMPING
 		
@@ -100,52 +104,5 @@ public class PlayerControlScript : MonoBehaviour
 		}
 		
 		
-		// JUMP DOWN AND ROLL 
-		
-		// if we are jumping down, set our Collider's Y position to the float curve from the animation clip - 
-		// this is a slight lowering so that the collider hits the floor as the character extends his legs
-		else if (currentBaseState.nameHash == jumpDownState)
-		{
-			col.center = new Vector3(0, anim.GetFloat("ColliderY"), 0);
-		}
-		
-		// if we are falling, set our Grounded boolean to true when our character's root 
-		// position is less that 0.6, this allows us to transition from fall into roll and run
-		// we then set the Collider's Height equal to the float curve from the animation clip
-		else if (currentBaseState.nameHash == fallState)
-		{
-			col.height = anim.GetFloat("ColliderHeight");
-		}
-		
-		// if we are in the roll state and not in transition, set Collider Height to the float curve from the animation clip 
-		// this ensures we are in a short spherical capsule height during the roll, so we can smash through the lower
-		// boxes, and then extends the collider as we come out of the roll
-		// we also moderate the Y position of the collider using another of these curves on line 128
-		else if (currentBaseState.nameHash == rollState)
-		{
-			if(!anim.IsInTransition(0))
-			{
-				if(useCurves)
-					col.height = anim.GetFloat("ColliderHeight");
-				
-				col.center = new Vector3(0, anim.GetFloat("ColliderY"), 0);
-				
-			}
-		}
-		// IDLE
-		
-		// check if we are at idle, if so, let us Wave!
-		else if (currentBaseState.nameHash == idleState)
-		{
-			if(Input.GetButtonUp("Jump"))
-			{
-				anim.SetBool("Wave", true);
-			}
-		}
-		// if we enter the waving state, reset the bool to let us wave again in future
-		if(layer2CurrentState.nameHash == waveState)
-		{
-			anim.SetBool("Wave", false);
-		}
 	}
 }
