@@ -32,10 +32,11 @@ public class PlayerControlScript : MonoBehaviour
 	
 	public void SimulateRightHandMovement()
 	{
-		float h = .9F;				// setup h variable as our horizontal input axis				// setup v variables as our vertical input axis
+		float h = 1F;				// setup h variable as our horizontal input axis				// setup v variables as our vertical input axis
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;	
 		transform.rotation = Quaternion.Euler(0F, 90F, 0F);
+		transform.Translate(0, 0, h * .1F);
 		
 		if(anim.GetBool("Jump"))
 			anim.SetBool("Jump", false);
@@ -59,6 +60,8 @@ public class PlayerControlScript : MonoBehaviour
 			transform.rotation = Quaternion.Euler(0F, 90F, 0F);
 		else
 			transform.rotation = Quaternion.Euler(0F, -90F, 0F);
+		
+		transform.Translate(0, 0, h * .1F);
 		
 		// STANDARD JUMPING
 		
