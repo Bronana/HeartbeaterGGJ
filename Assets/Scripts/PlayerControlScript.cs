@@ -61,7 +61,8 @@ public class PlayerControlScript : MonoBehaviour
 		else
 			transform.rotation = Quaternion.Euler(0F, -90F, 0F);
 		
-		transform.Translate(0, 0, h * .1F);
+		transform.Translate(0, 0, Mathf.Abs(h) * .1F);
+		anim.SetBool("Punch", false);
 		
 		// STANDARD JUMPING
 		
