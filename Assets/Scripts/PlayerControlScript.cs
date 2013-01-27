@@ -27,6 +27,7 @@ public class PlayerControlScript : MonoBehaviour
 	static int idleState = Animator.StringToHash("Base Layer.Idle");	
 	static int locoState = Animator.StringToHash("Base Layer.Locomotion");			// these integers are references to our animator's states
 	static int jumpState = Animator.StringToHash("Base Layer.Jump");				// and are used to check state for various actions to occur
+	static int punchState = Animator.StringToHash("Base Layer.Punch");
 	static int jumpDownState = Animator.StringToHash("Base Layer.JumpDown");		// within our FixedUpdate() function below
 	static int fallState = Animator.StringToHash("Base Layer.Fall");
 	static int rollState = Animator.StringToHash("Base Layer.Roll");
@@ -62,6 +63,11 @@ public class PlayerControlScript : MonoBehaviour
 		
 		// STANDARD JUMPING
 		
+		if(Input.GetMouseButtonDown(0))
+		{
+			anim.SetBool("Punch", true);
+		}
+		
 		// if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
 		if (currentBaseState.nameHash == locoState)
 		{
@@ -69,6 +75,7 @@ public class PlayerControlScript : MonoBehaviour
 			{
 				anim.SetBool("Jump", true);
 			}
+			
 		}
 		
 		// if we are in the jumping state... 
@@ -101,6 +108,10 @@ public class PlayerControlScript : MonoBehaviour
 					anim.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
 				}
 			}
+		}
+		if (currentBaseState.nameHash == punchState)
+		{
+			anim.SetBool("Punch", false);
 		}
 		
 		
