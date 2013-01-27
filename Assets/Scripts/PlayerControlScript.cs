@@ -7,33 +7,20 @@ using System.Collections;
 [RequireComponent(typeof (Rigidbody))]
 public class PlayerControlScript : MonoBehaviour
 {
-	[System.NonSerialized]					
-	public float lookWeight;					// the amount to transition when using head look
 	
-	[System.NonSerialized]
-	public Transform enemy;						// a transform to Lerp the camera to during head look
 	
 	public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
-	public float lookSmoother = 3f;				// a smoothing setting for camera motion
 	public bool useCurves;						// a setting for teaching purposes to show use of curves
 	public bool simulating;
 	
 	private Animator anim;							// a reference to the animator on the character
-	private AnimatorStateInfo currentBaseState;			// a reference to the current state of the animator, used for base layer
-	private AnimatorStateInfo layer2CurrentState;	// a reference to the current state of the animator, used for layer 2
-	private CapsuleCollider col;					// a reference to the capsule collider of the character
+	private CapsuleCollider col;
+	private AnimatorStateInfo currentBaseState;
 	
-
 	static int idleState = Animator.StringToHash("Base Layer.Idle");	
 	static int locoState = Animator.StringToHash("Base Layer.Locomotion");			// these integers are references to our animator's states
 	static int jumpState = Animator.StringToHash("Base Layer.Jump");				// and are used to check state for various actions to occur
-	static int punchState = Animator.StringToHash("Base Layer.Punch");
-	static int jumpDownState = Animator.StringToHash("Base Layer.JumpDown");		// within our FixedUpdate() function below
-	static int fallState = Animator.StringToHash("Base Layer.Fall");
-	static int rollState = Animator.StringToHash("Base Layer.Roll");
-	static int waveState = Animator.StringToHash("Layer2.Wave");
-	
-	
+	static int punchState = Animator.StringToHash("Base Layer.Punch");	
 	
 
 	void Start ()
@@ -41,8 +28,6 @@ public class PlayerControlScript : MonoBehaviour
 		// initialising reference variables
 		anim = GetComponent<Animator>();					  
 		col = GetComponent<CapsuleCollider>();				
-		if(anim.layerCount ==2)
-			anim.SetLayerWeight(1, 1);
 	}
 	
 	public void SimulateRightHandMovement()
@@ -51,20 +36,24 @@ public class PlayerControlScript : MonoBehaviour
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;	
 		transform.rotation = Quaternion.Euler(0F, 90F, 0F);
+		
+		if(anim.GetBool("Jump"))
+			anim.SetBool("Jump", false);
+	}
+	
+	public void SimulateJump()
+	{
+		transform.rotation = Quaternion.Euler(0F, 90F, 0F);
+		anim.SetBool("Jump", true);
 	}
 	
 	void FixedUpdate ()
 	{
 		if(simulating) return;
 		float h = Input.GetAxis("Horizontal");				// setup h variable as our horizontal input axis
-		float v = Input.GetAxis("Vertical");				// setup v variables as our vertical input axis
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;								// set the speed of our animator to the public variable 'animSpeed'
-		anim.SetLookAtWeight(lookWeight);					// set the Look At Weight - amount to use look at IK vs using the head's animation
-		currentBaseState = anim.GetCurrentAnimatorStateInfo(0);	// set our currentState variable to the current state of the Base Layer (0) of animation
 		
-		if(anim.layerCount == 2)		
-			layer2CurrentState = anim.GetCurrentAnimatorStateInfo(1);	// set our layer2CurrentState variable to the current state of the second Layer (1) of animation
 		
 		if(h > 0F)
 			transform.rotation = Quaternion.Euler(0F, 90F, 0F);
