@@ -5,11 +5,15 @@ public class environmentGenerator : MonoBehaviour {
 
     public GameObject mountain;
     public GameObject tree;
+    public GameObject tree2;
+    public GameObject tree3;
     public GameObject cloud1;
     public GameObject cloud2;
     public GameObject groundTile;
     public int numMountains = 100;
     public int numTree = 200;
+    public int numTree2 = 200;
+    public int numTree3 = 200;
     public int numCloud1 = 25;
     public int numCloud2 = 25;
     public int numTiles = 500;
@@ -25,6 +29,12 @@ public class environmentGenerator : MonoBehaviour {
 
         for (int i = 0; i < numTree; i++)
             Instantiate(tree, new Vector3(-4.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
+        
+        for (int i = 0; i < numTree2; i++)
+            Instantiate(tree2, new Vector3(-0.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
+
+        for (int i = 0; i < numTree3; i++)
+            Instantiate(tree3, new Vector3(4.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
 
         for (int i = 0; i < numCloud1; i++)
             Instantiate(cloud1, new Vector3(-6.7f + i * 5f, 1.4f, 4.8f), Quaternion.identity);
