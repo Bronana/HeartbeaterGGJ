@@ -6,8 +6,7 @@ public class ElfControllerScript : MonoBehaviour {
 	
 	public GameObject blood;
 	public GameObject heart;
-    public AudioClip[] deathSounds;
-    public AudioClip[] battleCries;
+	public GameObject deathSounds;
 	public GameControlScript controlScript;
 	bool killed = false;
 	public float animSpeed = 1f;				// a public setting for overall animator animation speed
@@ -48,7 +47,6 @@ public class ElfControllerScript : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		print(collision.gameObject.name);
 		if(collision.gameObject.name != "Jack") return;
 		Destroy(collider);
 		anim.SetBool("Killed", true);
@@ -67,15 +65,11 @@ public class ElfControllerScript : MonoBehaviour {
         yield return new WaitForSeconds(1);
         Destroy(this.gameObject);
     }
-
-    void playRandomDeathSounds()
-    {
-        Instantiate(deathSounds[Random.Range(1, deathSounds.Length)], transform.position, transform.rotation);
-    }
-
-    void playRandomBattleCries()
-    {
-        Instantiate(battleCries[Random.Range(1, battleCries.Length)], transform.position, transform.rotation);
-    }
+	
+	void playRandomDeathSounds()
+	{
+		if(Random.Range(0, 40) < 10)
+			Instantiate(deathSounds, transform.position, Quaternion.identity);
+	}
 }
 

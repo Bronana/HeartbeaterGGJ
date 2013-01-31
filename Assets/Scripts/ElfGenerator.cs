@@ -5,6 +5,7 @@ public class ElfGenerator : MonoBehaviour {
 
 	public GameObject elf;
 	public GameObject player;
+	public GameObject elfBattleCry;
 	
 	// Use this for initialization
 	void Start () {
@@ -18,6 +19,9 @@ public class ElfGenerator : MonoBehaviour {
 		{
 			//Instantiate(elf, new Vector3(player.transform.position.x + 2F, player.transform.position.y, player.transform.position.z), Quaternion.Euler(0, -90, 0));
 			Instantiate(elf, new Vector3(player.transform.position.x + 10F, player.transform.position.y, player.transform.position.z), Quaternion.identity);
+			
+			if(Random.Range(0, 40) < 10)
+				Instantiate(elfBattleCry, transform.position, Quaternion.identity);
 		}
 		
 	}
