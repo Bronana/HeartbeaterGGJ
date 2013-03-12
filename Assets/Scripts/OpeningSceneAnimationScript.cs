@@ -10,8 +10,8 @@ public class OpeningSceneAnimationScript : MonoBehaviour {
 	void Start () {
 		pcs = GetComponent<PlayerControlScript>();
 		//startAnimation = true;
-		StartCoroutine(Do());
-
+		StartCoroutine(DoRunAnimation());
+		StartCoroutine(DoJumpAnimation());
 	}
 	
 	// Update is called once per frame
@@ -23,9 +23,15 @@ public class OpeningSceneAnimationScript : MonoBehaviour {
 			Application.LoadLevel(1);
 	}
 	
-	 IEnumerator Do() {
+	 IEnumerator DoRunAnimation() {
 
         yield return new WaitForSeconds(13);
         startAnimation = true;
+    }
+	
+	IEnumerator DoJumpAnimation() {
+
+        yield return new WaitForSeconds(13.22f);
+        pcs.SimulateJump();
     }
 }

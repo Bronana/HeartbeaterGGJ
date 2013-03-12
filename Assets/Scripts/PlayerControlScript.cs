@@ -33,16 +33,14 @@ public class PlayerControlScript : MonoBehaviour
 		float h = 1F;				// setup h variable as our horizontal input axis				// setup v variables as our vertical input axis
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;	
-		transform.rotation = Quaternion.Euler(0F, 90F, 0F);
 		transform.Translate(0, 0, h * .1F);
-		
+		transform.rotation = Quaternion.Euler(0F, 0F, 0F);
 		if(anim.GetBool("Jump"))
 			anim.SetBool("Jump", false);
 	}
 	
 	public void SimulateJump()
 	{
-		transform.rotation = Quaternion.Euler(0F, 90F, 0F);
 		anim.SetBool("Jump", true);
 	}
 	
@@ -74,14 +72,14 @@ public class PlayerControlScript : MonoBehaviour
 		}
 		
 		// if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
-		if (currentBaseState.nameHash == locoState)
-		{
+		//if (currentBaseState.nameHash == locoState)
+		//{
 			if(Input.GetButtonDown("Jump"))
 			{
 				anim.SetBool("Jump", true);
 			}
 			
-		}
+		//}
 		
 		// if we are in the jumping state... 
 		else if(currentBaseState.nameHash == jumpState)
