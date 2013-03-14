@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameControlScript : MonoBehaviour {
 	public int playerHealth = 100;
+	private int score = 0;
+	
 	bool dead = false;
 	// Use this for initialization
 	void Start () {
@@ -19,6 +21,12 @@ public class GameControlScript : MonoBehaviour {
 		playerHealth -= 10;
 		if(playerHealth <= 0)
 			dead = true;
+		
+	}
+	
+	public void Score()
+	{
+		score += 10;
 		
 	}
 	

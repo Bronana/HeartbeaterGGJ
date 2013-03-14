@@ -31,7 +31,7 @@ public class OpeningSceneAnimationScript : MonoBehaviour {
 	
 	IEnumerator DoJumpAnimation() {
 
-        yield return new WaitForSeconds(13.22f);
+        yield return new WaitForSeconds(13.12f);
         pcs.SimulateJump();
     }
 }

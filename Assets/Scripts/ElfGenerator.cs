@@ -15,10 +15,15 @@ public class ElfGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if(Random.Range(0F, 500F) < 10F)
+		if(Random.Range(0F, 1000F) < 5F)
 		{
 			//Instantiate(elf, new Vector3(player.transform.position.x + 2F, player.transform.position.y, player.transform.position.z), Quaternion.Euler(0, -90, 0));
-			Instantiate(elf, new Vector3(player.transform.position.x + 10F, player.transform.position.y, player.transform.position.z), Quaternion.identity);
+			int temp = Random.Range(0, 2);
+			float posz = player.transform.position.z + (10F - (20F * temp));
+			if(posz > 57) posz = 57f;
+			if(posz < -3.8) posz = -3.8f;
+			
+			Instantiate(elf, new Vector3(player.transform.position.x, .33f, posz), Quaternion.identity);
 			
 			if(Random.Range(0, 40) < 10)
 				Instantiate(elfBattleCry, transform.position, Quaternion.identity);

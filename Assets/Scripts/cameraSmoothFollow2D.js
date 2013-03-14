@@ -26,7 +26,7 @@ function Update ()
 {
 	if(cameraFollowX)
 	{
-		thisTransform.position.x = Mathf.SmoothDamp(thisTransform.position.x, cameraTarget.transform.position.x, velocity.x, smoothTime);		
+		thisTransform.position.z = Mathf.SmoothDamp(thisTransform.position.z, cameraTarget.transform.position.z, velocity.x, smoothTime);		
 	}   
 	if(cameraFollowY)
 	{

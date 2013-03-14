@@ -8,6 +8,7 @@ using System.Collections;
 public class PlayerControlScript : MonoBehaviour
 {
 	public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
+	public float heightBump;
 	public bool useCurves;						// a setting for teaching purposes to show use of curves
 	public bool simulating;
 	int lastLook = 1;
@@ -16,9 +17,10 @@ public class PlayerControlScript : MonoBehaviour
 	private CapsuleCollider col;
 	private AnimatorStateInfo currentBaseState;
 		
-	static int locoState = Animator.StringToHash("Base Layer.Locomotion");			// these integers are references to our animator's states
-	static int jumpState = Animator.StringToHash("Base Layer.Jump");				// and are used to check state for various actions to occur
-	static int punchState = Animator.StringToHash("Base Layer.Punch");	
+	static int locoState = Animator.StringToHash("BaseLayer.Locomotion");			// these integers are references to our animator's states
+	static int locoState2 = Animator.StringToHash("BaseLayer.Locomotion 0");
+	static int jumpState = Animator.StringToHash("BaseLayer.Jump");				// and are used to check state for various actions to occur
+	static int punchState = Animator.StringToHash("BaseLayer.Punch");	
 	
 
 	void Start ()
@@ -47,40 +49,50 @@ public class PlayerControlScript : MonoBehaviour
 	void FixedUpdate ()
 	{
 		if(simulating) return;
+		currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
 		float h = Input.GetAxis("Horizontal");				// setup h variable as our horizontal input axis
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;								// set the speed of our animator to the public variable 'animSpeed'
 		
-		if(h > .1F)
-			lastLook = 1;
-		else if(h < -.1F)
-			lastLook = -1;
-		
-		if(lastLook == 1)
-			transform.rotation = Quaternion.Euler(0F, 90F, 0F);
-		else
-			transform.rotation = Quaternion.Euler(0F, -90F, 0F);
-		
-		transform.Translate(0, 0, Mathf.Abs(h) * .1F);
-		anim.SetBool("Punch", false);
-		
-		// STANDARD JUMPING
-		
-		if(Input.GetMouseButtonDown(0))
+		if(Input.GetKeyDown(KeyCode.Return))
 		{
 			anim.SetBool("Punch", true);
 		}
 		
-		// if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
-		//if (currentBaseState.nameHash == locoState)
-		//{
+		if (currentBaseState.nameHash == locoState || currentBaseState.nameHash == locoState2)
+		{
 			if(Input.GetButtonDown("Jump"))
 			{
 				anim.SetBool("Jump", true);
+				return;
 			}
 			
-		//}
-		
+			if(h > .1F)
+				lastLook = 1;
+			else if(h < -.1F)
+				lastLook = -1;
+			
+			if(lastLook == 1)
+				transform.rotation = Quaternion.Euler(0F, 0F, 0F);
+			else
+				transform.rotation = Quaternion.Euler(0F, -180F, 0F);
+			
+			
+			if(transform.position.y < .1F)
+				heightBump = .05F;
+			else
+				heightBump = 0;
+			
+			transform.Translate(0, heightBump, Mathf.Abs(h) * .1F);
+		}	
+		else if (currentBaseState.nameHash == punchState)
+		{
+			anim.SetBool("Punch", false);
+			if(lastLook == 1)
+				transform.rotation = Quaternion.Euler(0F, 35F, 0F);
+			else
+				transform.rotation = Quaternion.Euler(0F, -135F, 0F);
+		}
 		// if we are in the jumping state... 
 		else if(currentBaseState.nameHash == jumpState)
 		{
@@ -111,10 +123,6 @@ public class PlayerControlScript : MonoBehaviour
 					anim.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
 				}
 			}
-		}
-		if (currentBaseState.nameHash == punchState)
-		{
-			anim.SetBool("Punch", false);
 		}
 		
 		

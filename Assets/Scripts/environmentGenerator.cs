@@ -3,44 +3,41 @@ using System.Collections;
 
 public class environmentGenerator : MonoBehaviour {
 
-    public GameObject mountain;
-    public GameObject tree;
-    public GameObject tree2;
-    public GameObject tree3;
-    public GameObject cloud1;
-    public GameObject cloud2;
-    public GameObject groundTile;
-    public int numMountains = 100;
-    public int numTree = 200;
-    public int numTree2 = 200;
-    public int numTree3 = 200;
-    public int numCloud1 = 25;
-    public int numCloud2 = 25;
-    public int numTiles = 500;
+    public GameObject backTree1;
+	public GameObject backTree2;
+	public GameObject frontTree1;
+	public GameObject frontTree2;
+    public GameObject cloud;
+	public float boardStart = -7.3F;
+	public float boardEnd = 80.0F;
+	
 
 	// Use this for initialization
 	void Start () 
     {
-        for (int i = 0; i < numTiles; i++)
-            Instantiate(groundTile, new Vector3(-7 + i * .5f, 0, 4), Quaternion.identity);
+        for (float i = boardStart; i < boardEnd; i += Random.Range(3, 10)){
+           Instantiate(backTree1, new Vector3(backTree1.transform.position.x,
+				backTree1.transform.position.y, i), backTree1.transform.rotation);
+		}
+		for (float i = boardStart + 5; i < boardEnd; i += Random.Range(5, 15)){
+            Instantiate(backTree2, new Vector3(backTree2.transform.position.x,
+				backTree2.transform.position.y, i), backTree2.transform.rotation);
+		}
+		for (float i = boardStart + 2; i < boardEnd; i += Random.Range(14, 22)){
+            Instantiate(frontTree1, new Vector3(frontTree1.transform.position.x,
+				frontTree1.transform.position.y, i), frontTree1.transform.rotation);
+		}
+		
+		for (float i = boardStart + 7; i < boardEnd; i += Random.Range(17, 28)){
+            Instantiate(frontTree2, new Vector3(frontTree2.transform.position.x,
+				frontTree2.transform.position.y, i), frontTree2.transform.rotation);
+		}
+		
+		for (float i = boardStart - 7; i < boardEnd + 7; i += Random.Range(5, 11)){
+            Instantiate(cloud, new Vector3(cloud.transform.position.x,
+				cloud.transform.position.y + Random.Range(-1.5F, 1.5F), i), cloud.transform.rotation);
+		}
 
-        for (int i = 0; i < numMountains; i++)
-            Instantiate(mountain, new Vector3(-6.5f + i * 10f, 0.2f, 5.4f), Quaternion.identity);
-
-        for (int i = 0; i < numTree; i++)
-            Instantiate(tree, new Vector3(-4.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
-        
-        for (int i = 0; i < numTree2; i++)
-            Instantiate(tree2, new Vector3(-0.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
-
-        for (int i = 0; i < numTree3; i++)
-            Instantiate(tree3, new Vector3(4.4f + i * 20f, 1f, 7.9f), Quaternion.identity);
-
-        for (int i = 0; i < numCloud1; i++)
-            Instantiate(cloud1, new Vector3(-6.7f + i * 5f, 1.4f, 4.8f), Quaternion.identity);
-
-        for (int i = 0; i < numCloud2; i++)
-            Instantiate(cloud2, new Vector3(-3.7f + i * 5f, 3.0f, 5.1f), Quaternion.identity);
 	}
 	
 	// Update is called once per frame
