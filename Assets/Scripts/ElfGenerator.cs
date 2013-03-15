@@ -15,7 +15,7 @@ public class ElfGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if(Random.Range(0F, 1000F) < 5F)
+		if(Random.Range(0F, 750F) < 5F)
 		{
 			//Instantiate(elf, new Vector3(player.transform.position.x + 2F, player.transform.position.y, player.transform.position.z), Quaternion.Euler(0, -90, 0));
 			int temp = Random.Range(0, 2);

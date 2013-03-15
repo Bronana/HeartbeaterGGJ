@@ -8,13 +8,13 @@ using System.Collections;
 public class PlayerControlScript : MonoBehaviour
 {
 	public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
-	public float heightBump;
-	public bool useCurves;						// a setting for teaching purposes to show use of curves
+	public float heightBump;					// a setting for teaching purposes to show use of curves
 	public bool simulating;
 	int lastLook = 1;
 	
 	private Animator anim;							// a reference to the animator on the character
 	private CapsuleCollider col;
+	private bool justJumped = false;
 	private AnimatorStateInfo currentBaseState;
 		
 	static int locoState = Animator.StringToHash("BaseLayer.Locomotion");			// these integers are references to our animator's states
@@ -26,8 +26,7 @@ public class PlayerControlScript : MonoBehaviour
 	void Start ()
 	{
 		// initialising reference variables
-		anim = GetComponent<Animator>();					  
-		col = GetComponent<CapsuleCollider>();				
+		anim = GetComponent<Animator>();					  			
 	}
 	
 	public void SimulateRightHandMovement()
@@ -46,6 +45,16 @@ public class PlayerControlScript : MonoBehaviour
 		anim.SetBool("Jump", true);
 	}
 	
+	public bool IsPunching()
+	{
+		return currentBaseState.nameHash == punchState;		
+	}
+	
+	public bool IsJumping()
+	{
+		return currentBaseState.nameHash == jumpState;
+	}
+	
 	void FixedUpdate ()
 	{
 		if(simulating) return;
@@ -54,16 +63,17 @@ public class PlayerControlScript : MonoBehaviour
 		anim.SetFloat("Speed", h);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 		anim.speed = animSpeed;								// set the speed of our animator to the public variable 'animSpeed'
 		
-		if(Input.GetKeyDown(KeyCode.Return))
+		if(Input.GetKey(KeyCode.Return))
 		{
 			anim.SetBool("Punch", true);
 		}
 		
 		if (currentBaseState.nameHash == locoState || currentBaseState.nameHash == locoState2)
 		{
-			if(Input.GetButtonDown("Jump"))
+			if(Input.GetButton("Jump") && !justJumped)
 			{
 				anim.SetBool("Jump", true);
+				justJumped = true;
 				return;
 			}
 			
@@ -84,6 +94,7 @@ public class PlayerControlScript : MonoBehaviour
 				heightBump = 0;
 			
 			transform.Translate(0, heightBump, Mathf.Abs(h) * .1F);
+			justJumped = false;
 		}	
 		else if (currentBaseState.nameHash == punchState)
 		{
@@ -99,9 +110,6 @@ public class PlayerControlScript : MonoBehaviour
 			//  ..and not still in transition..
 			if(!anim.IsInTransition(0))
 			{
-				if(useCurves)
-					// ..set the collider height to a float curve in the clip called ColliderHeight
-					col.height = anim.GetFloat("ColliderHeight");
 				
 				// reset the Jump bool so we can jump again, and so that the state does not loop 
 				anim.SetBool("Jump", false);

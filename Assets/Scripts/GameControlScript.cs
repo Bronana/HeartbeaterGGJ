@@ -20,7 +20,11 @@ public class GameControlScript : MonoBehaviour {
 	{
 		playerHealth -= 10;
 		if(playerHealth <= 0)
-			dead = true;
+		{
+			PlayerPrefs.SetInt("score", score);
+			Application.LoadLevel(2);
+			
+		}
 		
 	}
 	
@@ -32,7 +36,8 @@ public class GameControlScript : MonoBehaviour {
 	
 	void OnGUI()
 	{
-		GUI.Box(new Rect(Screen.width / 2 - 50F, 0, 100, 50), "Health");
-		GUI.Label(new Rect(Screen.width / 2 - 20F, 20, 40, 25), playerHealth.ToString());
+		GUI.Box(new Rect(20, 20, 200, 100), "");
+		GUI.Label(new Rect(30, 25, 190, 25), "Health: " + playerHealth.ToString());
+		GUI.Label(new Rect(30, 50, 190, 50), "Organs freed from elvish captivity: " + score.ToString());
 	}
 }

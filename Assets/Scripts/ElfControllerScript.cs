@@ -8,10 +8,11 @@ public class ElfControllerScript : MonoBehaviour {
 	public GameObject heart;
 	public GameObject deathSounds;
 	private GameObject player;
+	private PlayerControlScript pScript;
 	public GameControlScript controlScript;
 	private bool killed = false;
 	private bool isRunningLeft = true;
-	public float animSpeed = 1f;				// a public setting for overall animator animation speed
+	public float animSpeed = .15f;				// a public setting for overall animator animation speed
 	
 	private Animator anim;							// a reference to the animator on the character
 	//private CapsuleCollider col;
@@ -23,8 +24,10 @@ public class ElfControllerScript : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		controlScript = GameObject.Find("GameControl").GetComponent<GameControlScript>();
 		player = GameObject.Find("Jack");
+		pScript = player.GetComponent<PlayerControlScript>();
 		if( transform.position.z < player.transform.position.z)
 			isRunningLeft = false;
+		
 	}
 	
 	
@@ -39,18 +42,19 @@ public class ElfControllerScript : MonoBehaviour {
 			transform.rotation = Quaternion.Euler(0F, 0F, 0F);
 	}
 	
-	void SetRunningLeft(bool value)
-	{
-		isRunningLeft = value;		
-	}
-	
 	void OnTriggerEnter(Collider other)
 	{
+		if(!pScript.IsPunching()) return;
+		
 		Destroy(collider);
 		anim.SetBool("Killed", true);
+		
 		Instantiate(blood, transform.position, Quaternion.identity);
 		var temp = (GameObject)Instantiate(heart, transform.position, Quaternion.identity);
 		temp.rigidbody.AddForce(0f, 1f, 0f);
+		
+		controlScript.Score();
+		
 		StartCoroutine(Kill());
         playRandomDeathSounds();
 	}
@@ -58,15 +62,21 @@ public class ElfControllerScript : MonoBehaviour {
 	void OnCollisionEnter(Collision collision)
 	{
 		if(collision.gameObject.name != "Jack") return;
+		
 		Destroy(collider);
 		anim.SetBool("Killed", true);
+		
 		Instantiate(blood, transform.position, Quaternion.identity);
 		var temp = (GameObject)Instantiate(heart, transform.position, Quaternion.identity);
 		temp.rigidbody.AddForce(0f, 1f, 0f);
+		
 		StartCoroutine(Kill());
         playRandomDeathSounds();
 		
-		controlScript.Hit();
+		if(pScript.IsJumping())
+			controlScript.Score();
+		else
+			controlScript.Hit();
 	}
 	
 	IEnumerator Kill() {
